@@ -19,7 +19,7 @@ fi
 SHA=${SHA:1:40}
 if  [ -f $UBOOT_ENV ]; then
   source $UBOOT_ENV
-  if [ "$UBOOT_SHA" == "$SHA" ] && [ -f $CACHE/$UBOOT_ZIP ]; then
+  if [ "$UBOOT_SHA" == "$SHA" ] && [ -f $OUT/$UBOOT_ZIP ]; then
     $ECHO "$UBOOT_ZIP is up-to-date, skip downloading." 
     exit
   fi
@@ -36,7 +36,7 @@ TMPFILE=tmp/tmp-uboot
 
 wget https://github.com/aidingnan/u-boot/archive/${UBOOT_SHA:0:7}.zip -O $TMPFILE
 
-mv $TMPFILE $CACHE/$UBOOT_ZIP
+mv $TMPFILE $OUT/$UBOOT_ZIP
 
 cat > $UBOOT_ENV << EOF
 UBOOT_SHA=$UBOOT_SHA

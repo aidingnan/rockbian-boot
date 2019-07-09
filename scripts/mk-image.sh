@@ -13,8 +13,8 @@ $SCRIPT_DIR/mk-uboot.sh
 source $SCRIPT_DIR/main.env
 source $UBOOT_ENV
 
-mkdir -p rkbin
-cd rkbin
+mkdir -p $OUT
+cd $OUT
 
 # rkusb loader
 tools/boot_merger RKBOOT/RK3328MINIALL.ini
@@ -31,7 +31,7 @@ tools/loaderimage --pack --uboot $UBOOT_BIN $UBOOT_IMG 0x200000
 # trust.img
 tools/trust_merger RKTRUST/RK3328TRUST.ini
 
-IMG=header.img
+IMG=rk3328-backus-emmc-8g-${UBOOT_SHA:0:7}.img
 
 # 0xE90000 * 0x200 (512) -> 7818182656
 fallocate -l 7818182656 $IMG
@@ -56,3 +56,9 @@ dd if=idbloader.img of=$IMG bs=512 seek=64 conv=notrunc
 dd if=$UBOOT_IMG of=$IMG bs=512 seek=16384 conv=notrunc
 # 0x6000
 dd if=trust.img of=$IMG bs=512 seek=24576 conv=notrunc
+
+tar cJf ../out.tar.xz .
+
+cd -
+
+$ECHO "done"
